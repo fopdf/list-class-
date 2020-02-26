@@ -14,6 +14,7 @@ public:
     void pushfront(T data);
     void popback();
     void insert(T value, int index);
+    void remove(int index);
     int GetSize() { return Size; }
     T& operator[](const int index);
 
@@ -104,6 +105,7 @@ inline void List<T>::pushfront(T data)
 template<typename T>
 inline void List<T>::popback()
 {
+    remove(Size-1);
 }
 
 template<typename T>
@@ -121,12 +123,37 @@ inline void List<T>::insert(T value, int index)
         {
             previous = previous->pNext;
         }
+        
         Node<T>* newNode = new Node<T>(value, previous->pNext);
         previous->pNext = newNode;
 
         Size++;
     }
 }
+
+template<typename T>
+inline void List<T>::remove(int index)
+{
+    if (index == 0)
+    {
+        popfront();
+    }
+    else
+    {
+        Node<T>* previous = this->head;
+        for (int i = 0; i < index - 1; i++)
+        {
+            previous = previous->pNext;
+        }
+        Node<T>* toDelete = previous->pNext;
+
+        previous->pNext = toDelete->pNext;
+
+        delete toDelete;
+        Size--;
+    }
+}
+
 
 
 template<typename T>

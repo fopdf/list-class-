@@ -28,13 +28,19 @@ int main()
         cout << lst[i] << endl;
     }
     cout << "Элементов в списке " << lst.GetSize() << endl;
-    cout << "Удалим начальный элемент " << endl;
-    lst.popfront();
+    cout << "Вставка элемента " << endl;
+    lst.insert(99, 1);
+    for (int i = 0; i < lst.GetSize(); i++)
+    {
+        cout << lst[i] << endl;
+    }
+    cout << "Элементов в списке " << lst.GetSize() << endl;
+    cout << "Удаление элемента " << endl;
+    lst.remove(1);
     for (int i = 0; i < lst.GetSize(); i++)
     {
         cout << lst[i] << endl;
     }
     cout << "Элементов в списке " << lst.GetSize() << endl;
     return 0;
-
 }
