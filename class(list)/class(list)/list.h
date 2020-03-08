@@ -2,45 +2,58 @@
 #include <string>
 using namespace std;
 
-template<typename T>
-class List
+class Container
+{
+public:
+    // Виртуальные методы, должны быть реализованы вашим контейнером
+    virtual void insert(int data, int index) = 0;
+    virtual bool exists(int data) = 0;
+    virtual void remove(int data) = 0;
+
+    // И этот тоже, хотя к нему потом ещё вернёмся
+    virtual void print() = 0;
+
+    // Виртуальный деструктор (пока просто поверьте, что он нужен)
+    virtual ~Container() { };
+};
+
+
+class Node
+{
+public:
+
+    Node* pNext;                                      //pointer Next
+    int data;
+
+    Node(int data, Node* pNext = nullptr)
+    {
+        this->data = data;
+        this->pNext = pNext;
+    }
+};
+
+class List:public Container
+
 {
 public:
     List();
     ~List();
-    void popfront();
-    void pushback(T data);
+    void popfront();                                    
+    void pushback(int data);
     void clearr();
-    void pushfront(T data);
+    void pushfront(int data);
     void popback();
-    void insert(T value, int index);
+    void insert(int value,int index);
     void remove(int index);
     int GetSize() { return Size; }
-    T& operator[](const int index);
+    bool exists(int data);
+    void print();
 
-private:
-
-
-    template<typename T>
-    class Node
-    {
-    public:
-
-        Node* pNext;                                      //pointer Next
-        T data;
-
-        Node(T data = T(), Node* pNext = nullptr)
-        {
-            this->data = data;
-            this->pNext = pNext;
-        }
-    };
     int Size;
-    Node<T>* head;
+    Node* head;
 };
 
-template<typename T>
-List<T>::List()                                            //create node
+List::List()                                            //create node
 {
     Size = 0;
     head = nullptr;
@@ -48,46 +61,56 @@ List<T>::List()                                            //create node
 
 
 
-template<typename T>
-List<T>::~List()
+List::~List()
 {
     clearr();
 }
 
-template<typename T>                    //delete first element
-void List<T>::popfront()
+void List::print()
 {
-    Node<T>* temp = head;
+    Node* Current = this->head;
+    cout << "----Current List----Lenght = " << GetSize() << "\n";
+    while (Current->pNext != NULL)
+    {
+        cout << Current->data << "\n";
+        Current = Current->pNext;
+    }
+    cout << Current->data << "\n";
+}
+
+//delete first element
+void List::popfront()
+{
+    Node* temp = head;
     head = head->pNext;
     delete temp;
     Size--;
 }
 
 
-template<typename T>
-void List<T>::pushback(T data)                            //add element
+void List::pushback(int data)                            //add element
 {
     if (head == nullptr)
     {
-        head = new Node<T>(data);
+        head = new Node(data);
     }
     else
     {
-        Node<T>* current = this->head;
+        Node* current = this->head;
 
         while (current->pNext != nullptr)
         {
             current = current->pNext;
         }
-        current->pNext = new Node<T>(data);
+        current->pNext = new Node(data);
 
     }
 
     Size++;
 }
 
-template<typename T>
-void List<T>::clearr()
+
+void List::clearr()
 {
     while (Size)
     {
@@ -95,44 +118,45 @@ void List<T>::clearr()
     }
 }
 
-template<typename T>
-inline void List<T>::pushfront(T data)
+
+inline void List::pushfront(int data)                              
 {
-    head = new Node<T>(data, head);
+    head = new Node(data, head);
     Size++;
 }
 
-template<typename T>
-inline void List<T>::popback()
+
+inline void List::popback()
 {
     remove(Size-1);
 }
 
-template<typename T>
-inline void List<T>::insert(T value, int index)
+
+void List::insert(int value, int index)
 {
     if (index == 0)
     {
-        pushfront(value);
+        head = new Node(value, head);
+        Size++;
     }
     
-    else {
-        Node<T>* previous = this->head;
+    else {  
+        Node* previous = this->head;
 
         for (int i = 0; i < index - 1; i++)
         {
             previous = previous->pNext;
         }
-        
-        Node<T>* newNode = new Node<T>(value, previous->pNext);
+            
+        Node* newNode = new Node(value, previous->pNext);
         previous->pNext = newNode;
 
-        Size++;
+        Size++; 
     }
 }
 
-template<typename T>
-inline void List<T>::remove(int index)
+
+inline void List::remove(int index)
 {
     if (index == 0)
     {
@@ -140,34 +164,42 @@ inline void List<T>::remove(int index)
     }
     else
     {
-        Node<T>* previous = this->head;
+        Node* previous = this->head;
         for (int i = 0; i < index - 1; i++)
         {
             previous = previous->pNext;
+            if (previous == nullptr)
+            {
+                break;
+            }
         }
-        Node<T>* toDelete = previous->pNext;
+        if (previous == nullptr)
+        {
 
-        previous->pNext = toDelete->pNext;
+        }
+        else {
+            Node* toDelete = previous->pNext;
 
-        delete toDelete;
-        Size--;
+            previous->pNext = toDelete->pNext;
+
+            delete toDelete;
+            Size--;
+        }
     }
 }
 
 
-
-template<typename T>
-T& List<T>:: operator[](const int index)              //search node by index
+bool List::exists(int data)
 {
-    int counter = 0;
-    Node<T>* current = this->head;
-    while (current != nullptr)
+    Node* Current = this->head;
+    while (true)
     {
-        if (counter == index)
-        {
-            return current->data;
-        }
-        current = current->pNext;
-        counter++;
+        if (Current-> data == data)
+            return true;
+
+        if (Current->pNext == NULL)
+            break;
+        Current = Current->pNext;
     }
+    return false;
 }
