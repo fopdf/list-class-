@@ -45,7 +45,7 @@ int main()
     Container* c = new List;
 
     for (int i = 0; i < 10; i++)
-        c->insert(i * i, i);
+        c->insert(i * i);
 
     cout << "Container after creation:" << endl;
     c->print();

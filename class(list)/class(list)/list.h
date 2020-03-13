@@ -6,7 +6,7 @@ class Container
 {
 public:
     // Виртуальные методы, должны быть реализованы вашим контейнером
-    virtual void insert(int data, int index) = 0;
+    virtual void insert(int data) = 0;
     virtual bool exists(int data) = 0;
     virtual void remove(int data) = 0;
 
@@ -43,7 +43,7 @@ public:
     void clearr();
     void pushfront(int data);
     void popback();
-    void insert(int value,int index);
+    void insert(int value);
     void remove(int index);
     int GetSize() { return Size; }
     bool exists(int data);
@@ -132,27 +132,9 @@ inline void List::popback()
 }
 
 
-void List::insert(int value, int index)
+void List::insert(int value)
 {
-    if (index == 0)
-    {
-        head = new Node(value, head);
-        Size++;
-    }
-    
-    else {  
-        Node* previous = this->head;
-
-        for (int i = 0; i < index - 1; i++)
-        {
-            previous = previous->pNext;
-        }
-            
-        Node* newNode = new Node(value, previous->pNext);
-        previous->pNext = newNode;
-
-        Size++; 
-    }
+    pushfront(value);
 }
 
 
