@@ -48,7 +48,7 @@ public:
     int GetSize() { return Size; }
     bool exists(int data);
     void print();
-
+private:
     int Size;
     Node* head;
 };
