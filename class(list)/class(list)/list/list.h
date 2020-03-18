@@ -9,7 +9,6 @@ public:
     virtual void insert(int data) = 0;
     virtual bool exists(int data) = 0;
     virtual void remove(int data) = 0;
-    virtual void deletee(int data) = 0;
     // И этот тоже, хотя к нему потом ещё вернёмся
     virtual void print() = 0;
 
@@ -139,7 +138,7 @@ void List::insert(int value)
 }
 
 
-inline void List::remove(int index)
+inline void List::deletee(int index)
 {
     if (index == 0)
     {
@@ -187,7 +186,7 @@ bool List::exists(int data)
     return false;
 }
 
-void List::deletee(int data)
+void List::remove(int data)
 {
     Node* Current = head;
     Node* temp;
@@ -198,7 +197,7 @@ void List::deletee(int data)
         temp = Current->pNext;
         if (Current->data == data)
         {
-            this->remove(i - j);
+            this->deletee(i - j);
             j++;
         }
         i++;

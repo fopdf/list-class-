@@ -56,7 +56,7 @@ int main()
     if (!c->exists(111))
         cout << "Search for value 111: not found" << endl;
 
-    c->deletee(25);
+    c->remove(25);
     cout << "Container after deletion of the element:" << endl;
     c->print();
 
