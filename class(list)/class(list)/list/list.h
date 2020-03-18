@@ -9,7 +9,7 @@ public:
     virtual void insert(int data) = 0;
     virtual bool exists(int data) = 0;
     virtual void remove(int data) = 0;
-
+    virtual void deletee(int data) = 0;
     // И этот тоже, хотя к нему потом ещё вернёмся
     virtual void print() = 0;
 
@@ -32,13 +32,13 @@ public:
     }
 };
 
-class List:public Container
+class List :public Container
 
 {
 public:
     List();
     ~List();
-    void popfront();                                    
+    void popfront();
     void pushback(int data);
     void clearr();
     void pushfront(int data);
@@ -48,6 +48,7 @@ public:
     int GetSize() { return Size; }
     bool exists(int data);
     void print();
+    void deletee(int data);
 private:
     int Size;
     Node* head;
@@ -119,7 +120,7 @@ void List::clearr()
 }
 
 
-inline void List::pushfront(int data)                              
+inline void List::pushfront(int data)
 {
     head = new Node(data, head);
     Size++;
@@ -128,7 +129,7 @@ inline void List::pushfront(int data)
 
 inline void List::popback()
 {
-    remove(Size-1);
+    remove(Size - 1);
 }
 
 
@@ -176,7 +177,7 @@ bool List::exists(int data)
     Node* Current = this->head;
     while (true)
     {
-        if (Current-> data == data)
+        if (Current->data == data)
             return true;
 
         if (Current->pNext == NULL)
@@ -184,4 +185,26 @@ bool List::exists(int data)
         Current = Current->pNext;
     }
     return false;
+}
+
+void List::deletee(int data)
+{
+    Node* Current = head;
+    Node* temp;
+    int i = 0;
+    int j = 0;
+    while (true)
+    {
+        temp = Current->pNext;
+        if (Current->data == data)
+        {
+            this->remove(i - j);
+            j++;
+        }
+        i++;
+        if (temp != NULL)
+            Current = temp;
+        else
+            break;
+    }
 }
