@@ -1,209 +1,68 @@
+#ifndef LIST_H
+#define LIST_H
 #include <iostream>
 #include <string>
+#include "container.h"
+#include <algorithm>
+#include <stdexcept>
+#include <vector>
 using namespace std;
 
-class Container
-{
-public:
-    // Виртуальные методы, должны быть реализованы вашим контейнером
-    virtual void insert(int data) = 0;
-    virtual bool exists(int data) = 0;
-    virtual void remove(int data) = 0;
-    // И этот тоже, хотя к нему потом ещё вернёмся
-    virtual void print() = 0;
 
-    // Виртуальный деструктор (пока просто поверьте, что он нужен)
-    virtual ~Container() { };
-};
-
-
+template<typename T>
 class Node
 {
 public:
 
-    Node* pNext;                                      //pointer Next
-    int data;
-
-    Node(int data, Node* pNext = nullptr)
+    Node<T>* pNext;                                      //pointer Next
+    T data;
+    bool exists(const T& data);
+    Node(const T& data, Node<T>* pNext = nullptr)
     {
         this->data = data;
         this->pNext = pNext;
     }
 };
+template<typename T>
+bool Node<T>::exists(const T& data)
+{
+    Node<T>* current = this;
+    while (current)
+    {
+        if (current->data == data)
+        {
+            return true;
+        }
+        current = current->pNext;
+    }
+    return false;
+}
+template class Node<int>;
 
-class List :public Container
+template<typename T>
+class List :public Container<T>
 
 {
 public:
     List();
     ~List();
     void popfront();
-    void pushback(int data);
+    void pushback(const T& data);
     void clearr();
-    void pushfront(int data);
+    void pushfront(const T& data);
     void popback();
-    void insert(int value);
-    void remove(int index);
+    void insert(const T& value) ;
+    void remove(const T& index) ;
     int GetSize() { return Size; }
-    bool exists(int data);
+    bool exists(const T& data) const ;
     void print();
-    void deletee(int data);
 private:
     int Size;
-    Node* head;
+    Node<T>* head;
 };
 
-List::List()                                            //create node
-{
-    Size = 0;
-    head = nullptr;
-}
+template class List<int>;
 
 
 
-List::~List()
-{
-    clearr();
-}
-
-void List::print()
-{
-    Node* Current = this->head;
-    cout << "----Current List----Lenght = " << GetSize() << "\n";
-    while (Current->pNext != NULL)
-    {
-        cout << Current->data << "\n";
-        Current = Current->pNext;
-    }
-    cout << Current->data << "\n";
-}
-
-//delete first element
-void List::popfront()
-{
-    Node* temp = head;
-    head = head->pNext;
-    delete temp;
-    Size--;
-}
-
-
-void List::pushback(int data)                            //add element
-{
-    if (head == nullptr)
-    {
-        head = new Node(data);
-    }
-    else
-    {
-        Node* current = this->head;
-
-        while (current->pNext != nullptr)
-        {
-            current = current->pNext;
-        }
-        current->pNext = new Node(data);
-
-    }
-
-    Size++;
-}
-
-
-void List::clearr()
-{
-    while (Size)
-    {
-        popfront();
-    }
-}
-
-
-inline void List::pushfront(int data)
-{
-    head = new Node(data, head);
-    Size++;
-}
-
-
-inline void List::popback()
-{
-    remove(Size - 1);
-}
-
-
-void List::insert(int value)
-{
-    pushfront(value);
-}
-
-
-inline void List::deletee(int index)
-{
-    if (index == 0)
-    {
-        popfront();
-    }
-    else
-    {
-        Node* previous = this->head;
-        for (int i = 0; i < index - 1; i++)
-        {
-            previous = previous->pNext;
-            if (previous == nullptr)
-            {
-                break;
-            }
-        }
-        if (previous == nullptr)
-        {
-
-        }
-        else {
-            Node* toDelete = previous->pNext;
-
-            previous->pNext = toDelete->pNext;
-
-            delete toDelete;
-            Size--;
-        }
-    }
-}
-
-
-bool List::exists(int data)
-{
-    Node* Current = this->head;
-    while (true)
-    {
-        if (Current->data == data)
-            return true;
-
-        if (Current->pNext == NULL)
-            break;
-        Current = Current->pNext;
-    }
-    return false;
-}
-
-void List::remove(int data)
-{
-    Node* Current = head;
-    Node* temp;
-    int i = 0;
-    int j = 0;
-    while (true)
-    {
-        temp = Current->pNext;
-        if (Current->data == data)
-        {
-            this->deletee(i - j);
-            j++;
-        }
-        i++;
-        if (temp != NULL)
-            Current = temp;
-        else
-            break;
-    }
-}
+#endif // LIST_H
