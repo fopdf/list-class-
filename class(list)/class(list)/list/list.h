@@ -17,12 +17,18 @@ public:
     Node<T>* pNext;                                      //pointer Next
     T data;
     bool exists(const T& data);
+    T getValue() const;
     Node(const T& data, Node<T>* pNext = nullptr)
     {
         this->data = data;
         this->pNext = pNext;
     }
 };
+template<typename T>
+T Node<T>::getValue() const
+{
+    return data;
+}
 template<typename T>
 bool Node<T>::exists(const T& data)
 {
@@ -38,6 +44,7 @@ bool Node<T>::exists(const T& data)
     return false;
 }
 template class Node<int>;
+template class Node<std::string>;
 
 template<typename T>
 class List :public Container<T>
@@ -46,23 +53,25 @@ class List :public Container<T>
 public:
     List();
     ~List();
+    
     void popfront();
     void pushback(const T& data);
     void clearr();
     void pushfront(const T& data);
-    void popback();
+
     void insert(const T& value) ;
-    void remove(const T& index) ;
+    void remove(const T& index);
     int GetSize() { return Size; }
     bool exists(const T& data) const ;
     void print();
+
 private:
-    int Size;
+    unsigned int Size;
     Node<T>* head;
 };
 
 template class List<int>;
-
+template class List<std::string>;
 
 
 #endif // LIST_H

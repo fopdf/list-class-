@@ -1,5 +1,14 @@
+#include <iostream>
 #include "list.h"
+#include <string>
 using namespace std;
+
+
+
+
+
+
+
 template<typename T>
 List<T>::List()                                            //create node
 {
@@ -74,11 +83,7 @@ inline void List<T>::pushfront(const T& data)
     Size++;
 }
 
-template<typename T>
-inline void List<T>::popback()
-{
-    remove(Size - 1);
-}
+
 
 template<typename T>
 void List<T>::insert(const T& value)
@@ -110,7 +115,7 @@ void List<T>::remove(const T& value)
             return;
         }
         Node<T>* element = head;
-        if (head->data == value)
+        if (head->getValue() == value)
         {
             Node<T>* temp = head->pNext;
             delete head;
@@ -118,9 +123,10 @@ void List<T>::remove(const T& value)
             Size--;
             return;
         }
+        
         for (unsigned int i = 0; i < Size - 1; i++)
         {
-            if (element->pNext->data != value)
+            if (element->pNext->getValue() != value)
             {
                 element = element->pNext;
                 continue;
@@ -133,3 +139,4 @@ void List<T>::remove(const T& value)
         }
     }
 }
+
